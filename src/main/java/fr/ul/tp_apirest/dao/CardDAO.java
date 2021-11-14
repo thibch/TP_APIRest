@@ -26,15 +26,25 @@ public class CardDAO implements ICardDAO {
     private final MongoTemplate mongoTemplate;
 
     public CardDAO(@Autowired MongoTemplate mongoTemplate) {
-        System.out.println("Card DAO constructor");
         this.mongoTemplate = mongoTemplate;
     }
 
+    /**
+     * Save the new card
+     * @param entity the card
+     * @return the new card
+     */
     @Override
     public <S extends Card> S save(S entity) {
         return this.mongoTemplate.save(entity);
     }
 
+    /**
+     * Not used
+     * But save all the elements given
+     * @param entities the cards
+     * @return the new list of cards
+     */
     @Override
     public <S extends Card> List<S> saveAll(Iterable<S> entities) {
         for(Card entity : entities) {
@@ -43,12 +53,21 @@ public class CardDAO implements ICardDAO {
         return null;
     }
 
+    /**
+     * Find all cards
+     * @return all cards
+     */
     @Override
     public List<Card> findAll() {
         return mongoTemplate.findAll(Card.class);
     }
 
 
+    /**
+     * Find the card by its id
+     * @param id the id of the card
+     * @return the card (Optional because it could be null)
+     */
     @Override
     public Optional<Card> findById(String id) {
         Query query = new Query(Criteria.where("id").is(id));
@@ -56,18 +75,32 @@ public class CardDAO implements ICardDAO {
         return Optional.ofNullable(card);
     }
 
+    /**
+     * Check if the card exists
+     * @param id the id of the card
+     * @return true if the card is present
+     */
     @Override
-    public boolean existsById(String s) {
-        System.out.println(findById(s));
-        return findById(s).isPresent();
+    public boolean existsById(String id) {
+        return findById(id).isPresent();
     }
 
+    /**
+     * Delete the card by its id
+     * @param id the id of the card you want to delete
+     */
     @Override
     public void deleteById(String id) {
         Optional<Card> opt = this.findById(id);
         opt.ifPresent(this.mongoTemplate::remove);
     }
 
+    /**
+     * Update the card with the id
+     * @param id the id of the new card
+     * @param card2 the new fields you want to update (except the id)
+     * @return the new card
+     */
     @Override
     public Card updateCard(String id, Card card2) {
         if (this.existsById(id)) {
@@ -78,11 +111,22 @@ public class CardDAO implements ICardDAO {
         return null;
     }
 
+    /**
+     * Delete all the cards in the db (Is used every launch of the app)
+     */
     @Override
     public void deleteAll() {
-        // Because this.mongoTemplate.remove(Card.class); does not work
         this.mongoTemplate.remove(new Query(), Card.class);
+        // Because this.mongoTemplate.remove(Card.class); does not work
     }
+
+
+    /* ---------------------------------------------- */
+    /* No need to see more, everything is empty after */
+    /* ---------------------------------------------- */
+
+
+
 
     @Override
     public Iterable<Card> findAllById(Iterable<String> strings) {

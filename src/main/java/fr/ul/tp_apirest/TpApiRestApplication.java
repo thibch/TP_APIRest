@@ -32,22 +32,20 @@ public class TpApiRestApplication implements CommandLineRunner {
     }
 
     /**
-     * Clear all elements and insert new ones
+     * Clear all elements and insert the default ones
      */
     @Override
     public void run(String... args) {
 
         repository.deleteAll();
 
-        System.out.println(repository.existsById("0066"));
-
-        // save a couple of customers
+        // save some cards
         repository.save(new Card("0001", 3, "Jean Cristhobaldo", new TypeCard("LEGENDE")));
         repository.save(new Card("0002", 5, "Zerator", new TypeCard("STREAMER")));
-        repository.save(new Card("0003", 1, "Ways to escape Hell", new TypeCard("Arme")));
+        repository.save(new Card("0003", 1, "Le katana", new TypeCard("Arme")));
         repository.save(new Card("0004", 4, "Ordinateur portable", new TypeCard("Magique")));
 
-        // fetch all customers
+        // fetch all
         System.out.println("Cards found with findAll():");
         System.out.println("-------------------------------");
         for (Card card : repository.findAll()) {

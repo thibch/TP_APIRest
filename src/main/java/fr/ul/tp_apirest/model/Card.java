@@ -12,11 +12,11 @@ public class Card {
     @Id
     @MongoId
     private String id = "";
-    private int niveau = 0; // 1 à 5 level
+    private int niveau = 0;     // 1 to 5 level
     private String nom = "";
     private TypeCard type = new TypeCard();
 
-    // ignore errors :)
+    // ignore the errors :)
     public Card(String id, int niveau, String nom, TypeCard typeCard) {
         this.id = id;
         this.niveau = niveau;
